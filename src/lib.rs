@@ -40,7 +40,7 @@ impl Config
 
         let query = args[1].clone();
         let file_path = args[2].clone();
-        let ignore_case = env::var("IGNORE CASE").is_ok();
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
 
         Ok(Config 
                 {query,
@@ -64,7 +64,7 @@ pub fn search<'a>(query: &'a str, contents: &'a str) -> Vec<&'a str>
 }
 
 pub fn search_case_insensitive<'a>(query: &'a str, contents: &'a str) 
-            ->Vec<&'a str>
+     ->Vec<&'a str>
 {
     let query = query.to_lowercase();
     let mut results = Vec::new();

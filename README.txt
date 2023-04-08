@@ -9,3 +9,5 @@ search: This function takes a query string and a string of contents, and returns
 search_case_insensitive: This function is similar to search, but it ignores the case when searching for the query.
 
 testing: This module contains unit tests for the search and search_case_insensitive functions.
+
+ignore_case: if set as a command line argument it will return true in the struct constructor

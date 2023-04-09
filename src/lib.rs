@@ -7,7 +7,7 @@ pub fn run(config_param: Config) -> Result<(), Box<dyn Error>>
 {
     let contents = fs::read_to_string(config_param.file_path)?;
 
-    let results = if config_param.ignore_case
+    let _results = if config_param.ignore_case
     {
         search_case_insensitive(&config_param.query, &contents);
     } else {
@@ -31,7 +31,8 @@ pub struct Config
 
 impl Config
 {
-    pub fn parse_config(args: &[String]) -> Result<Config, &'static str>
+    pub fn parse_config(mut args: impl Iterator<Item = String>) 
+        -> Result<Config, &'static str>
     {
         if args.len() < 3 
         {
@@ -40,7 +41,7 @@ impl Config
 
         let query = args[1].clone();
         let file_path = args[2].clone();
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        let ignore_case = env::var("IGNORE CASE").is_ok();
 
         Ok(Config 
                 {query,
@@ -64,7 +65,7 @@ pub fn search<'a>(query: &'a str, contents: &'a str) -> Vec<&'a str>
 }
 
 pub fn search_case_insensitive<'a>(query: &'a str, contents: &'a str) 
-     ->Vec<&'a str>
+            ->Vec<&'a str>
 {
     let query = query.to_lowercase();
     let mut results = Vec::new();

@@ -11,7 +11,8 @@ fn main()
     // stores command line args
     let args: Vec<String> = env::args().collect();
 
-    let config1 = Config::parse_config(&args).unwrap_or_else(|_err| {
+    let config1 = Config::parse_config(env::args()).unwrap_or_else(|_err| {
+        eprintln!("Problem parsing arguments {_err}");
         process::exit(1);
     });
 
@@ -21,7 +22,7 @@ fn main()
 
     if let Err(e) =  minigrep::run(config1)
     {
-        println!("Encountered runtime error: {e}");
+        eprintln!("Encountered runtime error: {e}");
         process::exit(1);
     }
 }

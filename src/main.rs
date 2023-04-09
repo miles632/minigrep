@@ -9,14 +9,15 @@ use minigrep::Config;
 fn main()
 {
     // stores command line args
-    let args: Vec<String> = env::args().collect();
+    let _args: Vec<String> = env::args().collect();
 
-    let config1 = Config::parse_config(env::args()).unwrap_or_else(|_err| {
+    let config1 = Config::parse_config(env::args())
+    .unwrap_or_else(|_err| {
         eprintln!("Problem parsing arguments {_err}");
         process::exit(1);
     });
 
-    let contents = fs::read_to_string(&config1.file_path)
+    let _contents = fs::read_to_string(&config1.file_path)
         .expect("Should have been able to read the file");
 
 

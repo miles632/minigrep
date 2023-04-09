@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::env;
+use std::process;
 
 
 pub fn run(config_param: Config) -> Result<(), Box<dyn Error>>
@@ -31,17 +32,22 @@ pub struct Config
 
 impl Config
 {
-    pub fn parse_config(mut args: impl Iterator<Item = String>) 
+    pub fn parse_config(mut args_iterator: impl Iterator<Item = String>) 
         -> Result<Config, &'static str>
     {
-        if args.len() < 3 
+        let query = match args_iterator.next()
         {
-            return Err("Not enough arguments");
-        }
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
 
-        let query = args[1].clone();
-        let file_path = args[2].clone();
-        let ignore_case = env::var("IGNORE CASE").is_ok();
+        let file_path = match args_iterator.next()
+        {
+            Some(arg) => arg,
+            None => return Err("Didn't get a fucking file path string"),
+        };
+
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
 
         Ok(Config 
                 {query,
@@ -52,16 +58,7 @@ impl Config
 
 pub fn search<'a>(query: &'a str, contents: &'a str) -> Vec<&'a str>
 {
-    let mut results = Vec::new();
-
-    for line in contents.lines()
-    {
-        if line.contains(query)
-        {
-            results.push(line);
-        }
-    }
-    results
+    contents.lines().filter(|line| line.contains(query)).collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &'a str, contents: &'a str) 

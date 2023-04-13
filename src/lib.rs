@@ -27,7 +27,6 @@ pub struct Config
     pub query: String,
     pub file_path: String,
     pub ignore_case: bool,
-    pub current_dir: bool,
 }
 
 impl Config
@@ -48,14 +47,11 @@ impl Config
         };
 
         let ignore_case = env::var("IGNORE_CASE").is_ok();
-        let current_dir = env::current_dir().is_ok();
 
-        Ok  (Config 
+        Ok(Config 
                 {query,
                 file_path,
-                ignore_case,
-                current_dir,}
-            )
+                ignore_case})
     }
 }
 

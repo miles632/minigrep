@@ -11,14 +11,24 @@ fn main()
     // stores command line args
     let _args: Vec<String> = env::args().collect();
 
-    let config1 = Config::parse_config(env::args())
-    .unwrap_or_else(|_err| {
+    for i in _args{
+        println!("{}", i)
+    }
+
+    let config1 = 
+    Config::parse_config(env::args()).unwrap_or_else(|_err| 
+    {
         eprintln!("Problem parsing arguments {_err}");
         process::exit(1);
     });
 
-    let _contents = fs::read_to_string(&config1.file_path)
-        .expect("Should have been able to read the file");
+    let _contents = match fs::read_to_string(&config1.file_path){
+        Ok(contents) => contents,
+        Err(err) => {
+            eprintln!("Error reading file: {}", err);
+            process::exit(1);
+        }
+    };
 
 
     if let Err(e) =  minigrep::run(config1)

@@ -1,5 +1,5 @@
 [package]
-name = "rust-book"
+name = "minigrep"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,8 +7,15 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
-env = "0.0.0"
+env = "*"
+fs = "*"
+regex = "1.5"
+
 
 [lib]
-name = "minigrep"
+name = "libs"
 path = "src/lib.rs"
+
+[rust]
+debug = true
+debuginfo-level = 2

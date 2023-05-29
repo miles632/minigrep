@@ -4,12 +4,12 @@ use std::fs;
 use std::io;
 /*
     TODO:
-    -Add coloring for the matched queries in the output
-    -Add coloring for line numbers in the output
-    -Make the search functions multi threaded
-    -Fix the whole god damn run-system and make it be able to run from a 
-    single command
-    -Unfuck the recursive search function
+        -Add coloring for the matched queries in the output
+        -Add coloring for line numbers in the output -- DONE!
+        -Make the search functions multi threaded
+        -Fix the whole god damn run-system and make it be able to run from a
+        single command
+        -Unfuck the recursive search function
  */
 
 macro_rules! print_matching_lines {
@@ -32,7 +32,7 @@ macro_rules! print_matching_lines {
 
         for (line_num, line) in search_case_insensitive($query, $contents) {
             // format the line_num with ANSII escape sequences
-            let mut colored_line_num = format!("\x1b[32m{}\x1b[0m", line_num);
+            let colored_line_num = format!("\x1b[32m{}\x1b[0m", line_num);
             println!("{}: {}", colored_line_num, line);
         }
     };
@@ -42,7 +42,7 @@ macro_rules! print_matching_lines {
 
         let _contents = fs::read_to_string(&$path)?;
         for (line_num, line) in search($query, $contents) {
-            let mut colored_line_num = format!("\x1b[32m{}\x1b[0m", line_num);
+            let colored_line_num = format!("\x1b[32m{}\x1b[0m", line_num);
             println!("{}: {}", colored_line_num, line);
         }
     };
@@ -75,7 +75,7 @@ pub fn run(config_struct: Config) -> Result<(), Box<dyn Error>> {
             case_recursive: true,
             ..
         } => {
-            println!("recursive case : dbg");
+            //println!("recursive case : dbg");
             let _matches = search_recursive(&config_struct.query, &config_struct.file_path);
             print_matching_lines!(
                 &config_struct.query,
@@ -93,7 +93,7 @@ pub fn run(config_struct: Config) -> Result<(), Box<dyn Error>> {
         } => {
             let contents = fs::read_to_string(&config_struct.file_path)?;
             search(&config_struct.query, &contents);
-            println!("Runnning case sensitive function");
+            //println!("Runnning case sensitive function");
             print_matching_lines!(
                 &config_struct.query,
                 &config_struct.file_path,
@@ -101,10 +101,11 @@ pub fn run(config_struct: Config) -> Result<(), Box<dyn Error>> {
                 case_sensitive
             );
             Ok(())
-        } // this probably won't be necessary but oh well!
-          // _ =>    { eprintln!("No specific case has been set");
-          //           Err(())
-          //         }
+        }
+        // this probably won't be necessary but oh well!
+        // _ =>    { eprintln!("No specific case has been set");
+        //           Err(())
+        //         }
     }
 }
 

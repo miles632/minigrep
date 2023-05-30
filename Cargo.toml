@@ -17,5 +17,9 @@ name = "libs"
 path = "src/lib.rs"
 
 [rust]
-debug = true
-debuginfo-level = 2
+#debug = true
+#debuginfo-level = 2
+
+[[bin]]
+name = "minigrep"
+path = "src/main.rs"

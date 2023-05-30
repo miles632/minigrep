@@ -28,8 +28,6 @@ macro_rules! print_matching_lines {
         use regex::Regex;
         use std::fmt::Write;
 
-        let query_regex = Regex::new($query).unwrap();
-
         for (line_num, line) in search_case_insensitive($query, $contents) {
             // format the line_num with ANSII escape sequences
             let colored_line_num = format!("\x1b[32m{}\x1b[0m", line_num);
@@ -176,50 +174,51 @@ pub fn search_case_insensitive<'a>(query: &'a str, contents: &'a str) -> Vec<(us
     matching_lines
 }
 
-pub fn search_recursive(query: &str, path: &str) -> Vec<(String, usize, String)> {
-    let mut matching_lines = Vec::new();
-    let query = query.to_lowercase();
-    println!("Searching in path: {}\n", &path);
+// pub fn search_recursive(query: &str, path: &str) -> Vec<(String, usize, String)> {
+//     let mut matching_lines = Vec::new();
+//     let query = query.to_lowercase();
+//     println!("Searching in path: {}\n", &path);
 
-    for entry in fs::read_dir(path).unwrap() {
-        let entry = entry.unwrap();
-        println!(
-            "Searching in entry: {}\n",
-            &entry.file_name().to_string_lossy()
-        );
-        let path = entry.path();
-        if path.is_dir() {
-            let sub_matches = search_recursive(query.as_str(), path.to_str().unwrap());
-            matching_lines.extend(sub_matches);
-        } else {
-            match fs::read_to_string(&path) {
-                Ok(file) => {
-                    println!(
-                        "Reading from file: {} in path: {}",
-                        path.file_name().unwrap().to_str().unwrap(),
-                        &path.display()
-                    );
-                    for (line_num, line) in file.lines().enumerate() {
-                        if line.to_lowercase().contains(&query) {
-                            matching_lines.push((
-                                path.to_str().unwrap().to_string(),
-                                line_num + 1,
-                                line.to_string(),
-                            ));
-                        }
-                    }
-                }
-                Err(e) if e.kind() == io::ErrorKind::InvalidData => {
-                    println!(
-                        "Skipping file: {} due to invalid UTF-8 encoding",
-                        path.display()
-                    );
-                }
-                Err(_e) => {
-                    panic!("Failed to read file {}", &path.display());
-                }
-            }
-        }
-    }
-    matching_lines
-}
+//     for entry in fs::read_dir(path).unwrap() {
+//         let entry = entry.unwrap();
+//         println!(
+//             "Searching in entry: {}\n",
+//             &entry.file_name().to_string_lossy()
+//         );
+//         let path = entry.path();
+//         if path.is_dir() {
+//             let sub_matches = search_recursive(query.as_str(), path.to_str().unwrap());
+//             matching_lines.extend(sub_matches);
+//         } else {
+//             match fs::read_to_string(&path) {
+//                 Ok(file) => {
+//                     println!(
+//                         "Reading from file: {} in path: {}",
+//                         path.file_name().unwrap().to_str().unwrap(),
+//                         &path.display()
+//                     );
+//                     for (line_num, line) in file.lines().enumerate() {
+//                         if line.to_lowercase().contains(&query) {
+//                             matching_lines.push((
+//                                 path.to_str().unwrap().to_string(),
+//                                 line_num + 1,
+//                                 line.to_string(),
+//                             ));
+//                         }
+//                     }
+//                 }
+//                 Err(e) if e.kind() == io::ErrorKind::InvalidData => {
+//                     println!(
+//                         "Skipping file: {} due to invalid UTF-8 encoding",
+//                         path.display()
+//                     );
+//                 }
+//                 Err(_e) => {
+//                     panic!("Failed to read file {}", &path.display());
+//                 }
+//             }
+//         }
+//     }
+//     matching_lines
+// }
+
